@@ -1,0 +1,91 @@
+<!-- Твое ТЗ (Техническое задание) на сегодня
+ Твоя цель на эти 3 часа — с нуля написать структуру и стили для персонального сайта-портфолио. 
+ Ниже четкие параметры, по которым ты будешь строить код.
+ 1. Структура HTML (Файл index.html)
+    Используй только семантические теги:
+*    <header> — Шапка. 
+*        Внутри логотип (просто текст, например, JS.Dev) и навигация <nav> с 3-4 ссылками (Главная, Обо мне, Проекты, Контакты).
+*    <main> — Основной контент. 
+        Внутри него разделы <section>:
+*            Секция 1 (Приветствие): Крупный заголовок <h1> с твоим именем и профессией ("Привет, я Фронтенд-разработчик") + кнопка "Связаться".
+*            Секция 2 (Обо мне & Цели): Текст о твоей мотивации, целях (выплата кредитов, помощь маме, развитие в ИТ) и стек технологий, который планируешь освоить.
+*            Секция 3 (Мои проекты): Сделай сетку из 3 пустых карточек (внутри каждой заголовок <h3>, описание проекта и фейковая ссылка "Смотреть код").
+*    <footer> — Подвал. Копирайт "© 2026 Твое Имя" и ссылки на соцсети.
+
+2. Стили CSS (Файл style.css)
+Твоя задача — сделать страницу аккуратной и современной:
+Сброс стилей: Пропиши в самом верху * { box-sizing: border-box; margin: 0; padding: 0; }.
+Цветовая гамма: Сделай темную тему (сейчас это тренд). Например, фон #121212, текст #ffffff, а акцентный цвет для кнопок и ссылок — какой-нибудь яркий (зеленый #00ff88 или фиолетовый #7b2cbf).
+Шрифты: Подключи стандартный системный шрифт через body { font-family: sans-serif; }.
+Верстка блоков: Шапку сайта и карточки проектов выровняй строго с помощью Flexbox (display: flex).
+Адаптивность: Напиши один медиазапрос @media (max-width: 768px), чтобы на смартфонах карточки проектов вставали друг под друга (flex-direction: column). -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a class="logo">JS.Dev</a>
+            <nav class="navigation">
+                <ul class="navigation-links">
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Обо мне</a></li>
+                    <li><a href="#">Проекты</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <section class="greeting">
+                <h1>Привет, я Фронтенд-разработчик</h1>
+                <button class="btn">Связаться</button>
+            </section>
+            <section class="about-me">
+                <h2>Обо мне</h2>
+                <p>Текст о мотивации, целях (выплата кредитов, помощь маме, развитие в ИТ) и стек технологий, который планируешь освоить.</p>
+            </section>
+            <section class="main-projects">
+                <h2>Мои проекты</h2>
+                <div class="project-cards">
+                    <div class="project-card">
+                        <h3>Проект 1</h3>
+                        <a href="#"><img src="./img/1.jpg" alt="Проект 1"></a>
+                        <p>Описание проекта 1</p>
+                        <a href="#">Смотреть код</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Проект 2</h3>
+                        <a href="#"><img src="./img/2.jpg" alt="Проект 2"></a>
+                        <p>Описание проекта 2</p>
+                        <a href="#">Смотреть код</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Проект 3</h3>
+                        <a href="#"><img src="./img/3.jpg" alt="Проект 3"></a>
+                        <p>Описание проекта 3</p>
+                        <a href="#">Смотреть код</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Alex</p>
+            <div class="social-links">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
