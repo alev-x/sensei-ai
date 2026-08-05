@@ -99,7 +99,7 @@ body {
         flex-direction: column;
         gap: 10px;
     }
-    .project-cards {
+    .project-card {
         width: 100%;
         max-width: 300px;
     }

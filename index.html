@@ -56,7 +56,13 @@
                         Email
                         <input id="email" type="email" placeholder="Введите Ваш Email" required/>
                     </label>
-                    <input type="submit" id="submit"> 
+                    <button type="submit" id="submit">Отправить</button>
+                    <!-- Маленькая деталь на будущее (Best Practice)
+                     Вместо 
+                     <input type="submit" id="submit"> 
+                     сейчас принято писать просто тег кнопки: 
+                     <button type="submit" id="submit">Отправить</button>. 
+                     Это гибче, так как внутрь <button> можно положить, например, иконку, а в <input> можно засунуть только текст через атрибут value. Но твой вариант рабочий и не считается ошибкой. -->
                 </form>
             </section>
             <section class="about-me section-flex">
