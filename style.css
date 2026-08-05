@@ -89,6 +89,11 @@ body {
     height: auto;
 }
 
+/*Скрытие блока*/
+.content-hidden {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .navigation-links {
         flex-direction: column;
