@@ -16,9 +16,9 @@ button.addEventListener('click', function() {
 
 
 const myProjects = [
-  { title: "Адаптивное портфолио", desc: "Мой первый сайт на HTML и CSS с темной темой.", link: "#"},
-  { title: "JS Трекер кредитов", desc: "Автоматизированная система проверки баланса на чистом JavaScript.", link: "#"},
-  { title: "Будущий проект на React", desc: "Здесь будет крутое SPA приложение.", link: "#"}
+  { title: "Адаптивное портфолио", image: "./img/1.jpg", image_alt: "Проект 1", desc: "Мой первый сайт на HTML и CSS с темной темой.", link: "#"},
+  { title: "JS Трекер кредитов", image: "./img/2.jpg", image_alt: "Проект 2", desc: "Автоматизированная система проверки баланса на чистом JavaScript.", link: "#"},
+  { title: "Будущий проект на React", image: "./img/3.jpg", image_alt: "Проект 3", desc: "Здесь будет крутое SPA приложение.", link: "#"}
 ]
 
 // 1. Находим пустой контейнер на странице
@@ -29,6 +29,7 @@ for (const project of myProjects) {
   const cardHTML = `
     <div class="project-card">
       <h3>${project.title}</h3>
+      <a href="${project.link}"><img src="${project.image}" alt="${project.image_alt}"></a>
       <p>${project.desc}</p>
       <a href="${project.link}">Смотреть код</a>
     </div>
