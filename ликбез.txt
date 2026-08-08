@@ -687,6 +687,85 @@ renderCredits();
 
 
 ****************************************************************************************************************************************
+Отличные новости! Ты создал свое первое полноценное интерактивное веб-приложение (SPA) с сохранением состояния (State Management) на чистом JavaScript. Сайт не просто отображает разметку, он работает с памятью браузера. Для портфолио джуна это очень крепкий и правильный старт.
+Раз код уже на GitHub, давай добьем это приложение до коммерческого блеска. Сейчас у тебя есть карточки, но нет главных цифр — аналитики. Пользователь (и ты сам) должен зайти и сразу увидеть общую картину: масштаб катастрофы (общий долг) и нагрузку на бюджет (все выплаты в месяц).
+------------------------------
+## ТЗ на финальный штрих: Информационная панель (Dashboard)
+Мы добавим блок статистики прямо над карточками кредитов. Твоя задача — сделать так, чтобы цифры там пересчитывались автоматически при добавлении или удалении любого кредита.
+## Шаг 1. Обновляем index.html
+Вставь этот блок в свой index.html прямо между формой #credit-form и контейнером #credits-list:
+
+<!-- Панель общей статистики -->
+<div class="dashboard" style="display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+    <div style="background: #1e1e1e; padding: 15px 30px; border-radius: 8px; border-left: 4px solid #7b2cbf;">
+        <p style="font-size: 14px; color: #aaa;">Общая сумма долгов</p>
+        <span id="total-debts-sum" style="font-size: 24px; font-weight: bold; color: #fff;">0 ₽</span>
+    </div>
+    <div style="background: #1e1e1e; padding: 15px 30px; border-radius: 8px; border-left: 4px solid #00ff88;">
+        <p style="font-size: 14px; color: #aaa;">Финансовая нагрузка в месяц</p>
+        <span id="total-monthly-payment" style="font-size: 24px; font-weight: bold; color: #00ff88;">0 ₽</span>
+    </div>
+</div>
+
+------------------------------
+## Шаг 2. Оживляем статистику в script.js
+Теперь нам нужно научить JS считать эти суммы. Для этого идеально подходит метод массивов .reduce() — это стандартная фича современного JS, которую обожают спрашивать на собеседованиях. Она позволяет «склеить» весь массив в одно число.
+Найди в своем script.js функцию renderCredits() и обнови её, добавив расчет и вывод сумм. Вот как она должна выглядеть целиком:
+
+// 3. Функция для вывода кредитов на экран и расчета статистикиfunction renderCredits() {
+  if (!creditsListContainer) return;
+  creditsListContainer.innerHTML = '';
+
+  // --- НОВЫЙ БЛОК: РАСЧЕТ СТАТИСТИКИ ЧЕРЕЗ REDUCE ---
+  // Считаем общую сумму всех кредитов
+  const totalSum = creditsArray.reduce((acc, credit) => acc + credit.total, 0);
+  // Считаем общий ежемесячный платеж
+  const totalPayment = creditsArray.reduce((acc, credit) => acc + credit.payment, 0);
+
+  // Находим элементы на странице и вставляем туда посчитанные цифры
+  const totalSumElement = document.querySelector('#total-debts-sum');
+  const totalPaymentElement = document.querySelector('#total-monthly-payment');
+  
+  if (totalSumElement) totalSumElement.textContent = `${totalSum} ₽`;
+  if (totalPaymentElement) totalPaymentElement.textContent = `${totalPayment} ₽`;
+  // --------------------------------------------------
+
+  if (creditsArray.length === 0) {
+    creditsListContainer.innerHTML = '<p>У вас пока нет добавленных кредитов.</p>';
+    return;
+  }
+
+  const creditsHTML = creditsArray.map(credit => {
+    const monthsLeft = Math.ceil(credit.total / credit.payment);
+    return `
+      <div class="project-card" style="padding: 20px; text-align: left;">
+        <h3>${credit.title}</h3>
+        <p style="margin: 10px 0;">Остаток долга: <strong>${credit.total} ₽</strong></p>
+        <p style="margin: 10px 0;">Ежемесячный платеж: ${credit.payment} ₽</p>
+        <p style="margin: 10px 0; color: #00ff88;">Осталось месяцев: ${monthsLeft}</p>
+        <button class="btn" style="background-color: #e63946; margin-top: 10px;" onclick="deleteCredit(${credit.id})">Удалить</button>
+      </div>
+    `;
+  }).join('');
+
+  creditsListContainer.insertAdjacentHTML('beforeend', creditsHTML);
+}
+
+------------------------------
+## Что делаем:
+
+   1. Внеси эти правки.
+   2. Потестируй в браузере: при добавлении новых кредитов плашки сверху должны мгновенно пересчитывать общую сумму и платеж. При удалении — уменьшаться.
+
+После того как проверишь, делай финальный git commit и пушь. На этом архитектура приложения будет полностью завершена.
+Жду твой отчет:
+
+* Всё ли корректно считается на дашборде при добавлении/удалении?
+* Понятен ли тебе принцип работы метода .reduce(), или мне разобрать его механику «на пальцах», чтобы ты не просто переписал, а железно понял теорию?
+* Когда запушишь, напиши — мы закроем этот проект и наметим следующий шаг в твоем обучении.
+
+
+**************************************************************************************************************************************
 
 
 

@@ -115,12 +115,26 @@ function saveToLocalStorage() {
   localStorage.setItem('my_credits', JSON.stringify(creditsArray));
 };
 
-// 3. Функция для вывода кредитов на экран (осталась прежней)
+// 3. Функция для вывода кредитов на экран и расчета статистики
 function renderCredits() {
   // Если контейнера нет на странице, выходим из функции
   if (!creditsListContainer) return;
   // Очищаем контейнер, чтобы карточки не дублировались при каждом добавлении
   creditsListContainer.innerHTML = '';
+
+  // --- НОВЫЙ БЛОК: РАСЧЕТ СТАТИСТИКИ ЧЕРЕЗ REDUCE ---
+  // Считаем общую сумму всех кредитов
+  const totalSum = creditsArray.reduce((acc, credit) => acc + credit.total, 0);
+  // Считаем общий ежемесячный платеж
+  const totalPayment = creditsArray.reduce((acc, credit) => acc + credit.payment, 0);
+  // Находим элементы на странице и вставляем туда посчитанные цифры
+  const totalSumElement = document.querySelector('#total-debts-sum');
+  const totalPaymentElement = document.querySelector('#total-monthly-payment');
+  if (totalSumElement) totalSumElement.textContent = `${totalSum} грн`;
+  if (totalPaymentElement) totalPaymentElement.textContent = `${totalPayment} грн`;
+
+
+
   // Если кредитов пока нет, можем вывести простую заглушку
   if (creditsArray.length === 0) {
     creditsListContainer.innerHTML = '<p>У вас пока нет добавленных кредитов.</p>';

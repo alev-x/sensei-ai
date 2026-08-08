@@ -91,6 +91,17 @@
                     </div>
                     <button type="submit" class="btn" id="add_credit">Добавить кредит</button>
                 </form>
+                <!-- Панель общей статистики -->
+                <div class="dashboard" style="display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                    <div style="background: #1e1e1e; padding: 15px 30px; border-radius: 8px; border-left: 4px solid #7b2cbf;">
+                        <p style="font-size: 14px; color: #aaa;">Общая сумма долгов</p>
+                        <span id="total-debts-sum" style="font-size: 24px; font-weight: bold; color: #fff;">0 ₽</span>
+                    </div>
+                    <div style="background: #1e1e1e; padding: 15px 30px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                        <p style="font-size: 14px; color: #aaa;">Финансовая нагрузка в месяц</p>
+                        <span id="total-monthly-payment" style="font-size: 24px; font-weight: bold; color: #00ff88;">0 ₽</span>
+                    </div>
+                </div>
                 <!-- Сюда мы будем выводить список добавленных кредитов -->
                  <div id="credits-list" class="project-cards"></div>
             </section>
