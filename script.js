@@ -97,3 +97,72 @@ contactForm.addEventListener('submit', async function(event) {
     toggleButton.textContent = "Связаться";
   }
 });
+
+// ==================== ЛОГИКА ТРЕКЕРА КРЕДИТОВ ====================
+
+// 1. Создаем пустой массив, где будут храниться наши кредиты
+let creditsArray = [];
+
+// 2. Находим форму в HTML
+const creditForm = document.querySelector('#credit-form');
+const creditsListContainer = document.querySelector('#credits-list');
+
+// 3. Слушаем отправку формы
+if (creditForm) {
+  creditForm.addEventListener('submit', function(event) {
+    // Отменяем перезагрузку страницы
+    event.preventDefault();
+    // Собираем данные из инпутов с помощью FormData
+    const formData = new FormData(creditForm);
+    // Создаем объект нового кредита
+    const newCredit = {
+      id: Date.now(), // Уникальный ID для каждого кредита (метка времени)
+      title: formData.get('title'),
+      total: Number(formData.get('total')), // Переводим строку в число
+      payment: Number(formData.get('payment'))  // Переводим строку в число
+    };
+    // Добавляем новый кредит в наш массив
+    creditsArray.push(newCredit);
+    // Выводим в консоль, чтобы проверить, что всё сработало
+    console.log("Текущий список кредитов:", creditsArray);
+    // ВЫЗЫВАЕМ ФУНКЦИЮ РЕНДЕРА, ЧТОБЫ КАРТОЧКА ПОЯВИЛАСЬ НА ЭКРАНЕ
+    renderCredits();
+    // Очищаем поля формы для следующего ввода
+    creditForm.reset();
+  });
+}
+// 4. Функция для вывода кредитов на экран
+function renderCredits() {
+  // Если контейнера нет на странице, выходим из функции
+  if (!creditsListContainer) return;
+  // Очищаем контейнер, чтобы карточки не дублировались при каждом добавлении
+  creditsListContainer.innerHTML = '';
+  // Если кредитов пока нет, можем вывести простую заглушку
+  if (creditsArray.length === 0) {
+    creditsListContainer.innerHTML = '<p>У вас пока нет добавленных кредитов.</p>';
+    return;
+  }
+  // Перебираем массив кредитов и создаем HTML для каждого
+  const creditsHTML = creditsArray.map(credit => {
+    // Считаем, за сколько месяцев закроется кредит (Округляем в большую сторону)
+    const monthsLeft = Math.ceil(credit.total / credit.payment);
+    return `
+      <div class="project-card" style="padding: 20px; text-align: left;">
+        <h3>${credit.title}</h3>
+        <p style="margin: 10px 0;">Остаток долга: <strong>${credit.total} ₽</strong></p>
+        <p style="margin: 10px 0;">Ежемесячный платеж: ${credit.payment} ₽</p>
+        <p style="margin: 10px 0; color: #00ff88;">Осталось месяцев: ${monthsLeft}</p>
+        <button class="btn" style="background-color: #e63946; margin-top: 10px;" onclick="deleteCredit(${credit.id})">Удалить</button>
+      </div>
+    `;
+  }).join('');
+  // Вставляем сгенерированный HTML в контейнер
+  creditsListContainer.insertAdjacentHTML('beforeend', creditsHTML);
+};
+// 5. Функция для удаления кредита (пока просто заготовка, чтобы кнопка не выдавала ошибку)
+window.deleteCredit = function(id) {
+  // Фильтруем массив: оставляем только те кредиты, ID которых не равен удаляемому
+  creditsArray = creditsArray.filter(credit => credit.id !== id);
+  // Перерисовываем список на экране
+  renderCredits();
+};

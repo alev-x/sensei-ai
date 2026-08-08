@@ -74,6 +74,27 @@
                 <p>Целеустремленный Frontend-разработчик. Моя цель — создавать быстрые, адаптивные и доступные интерфейсы. Постоянно развиваюсь, практикуюсь по 20 часов в неделю и нацелен на коммерческий результат в кратчайшие сроки.</p>
             </section>
 
+            <section class="credit-tracker section-flex">
+                <h2>Трекер кредитов</h2>
+                <form id="credit-form">
+                    <div class="form-group">
+                            <label for="name_credit">Наименование кредита</label>
+                            <input id="name_credit" name="title" type="text" placeholder="Введите наименование кредита" minlength="2" maxlength="20" required/>
+                    </div>
+                    <div class="form-group">
+                            <label for="total_credit">Общая сумма</label>
+                            <input id="total_credit" name="total" type="number" min="1" placeholder="Введите общую сумму" required/>
+                    </div>
+                    <div class="form-group">
+                            <label for="monthly_payment">Ежемесячный платеж</label>
+                            <input id="monthly_payment" name="payment" type="number" min="1" placeholder="Введите ежемесячный платеж" required/>
+                    </div>
+                    <button type="submit" class="btn" id="add_credit">Добавить кредит</button>
+                </form>
+                <!-- Сюда мы будем выводить список добавленных кредитов -->
+                 <div id="credits-list" class="project-cards"></div>
+            </section>
+
             <section class="main-projects section-flex">
                 <h2>Мои проекты</h2>
                 <div class="project-cards" id="project-cards-container">
