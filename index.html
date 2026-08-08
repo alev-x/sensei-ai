@@ -21,17 +21,17 @@
 Адаптивность: Напиши один медиазапрос @media (max-width: 768px), чтобы на смартфонах карточки проектов вставали друг под друга (flex-direction: column). -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My portfolio</title>
+    <title>Мое Портфолио | JS.Dev</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="header">
-        <div class="container">
-            <a class="logo">JS.Dev</a>
+        <div class="container header-container"> <!-- Добавил класс для флексов в будущем -->
+            <a href="#" class="logo">JS.Dev</a>
             <nav class="navigation">
                 <ul class="navigation-links">
                     <li><a href="#">Главная</a></li>
@@ -42,21 +42,24 @@
             </nav>
         </div>
     </header>
+    
     <main class="main">
         <div class="container">
             <section class="greeting section-flex">
                 <h1>Привет, я Фронтенд-разработчик</h1>
                 <button class="btn" id="call_back">Связаться</button>
-                <form class="content-hidden" id="callback-form">
-                    <label id="name-label" for="name">
-                        Имя
+
+                <form class="callback-form content-hidden" id="callback-form">
+                    <div class="form-group">
+                        <label for="name">Имя</label>
                         <input id="name" type="text" placeholder="Введите Ваше имя" minlength="2" maxlength="8" required/>
-                    </label>
-                    <label id="email-label" for="email">
-                        Email
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
                         <input id="email" type="email" placeholder="Введите Ваш Email" required/>
-                    </label>
-                    <button type="submit" id="submit">Отправить</button>
+                        
+                    </div>
+                    <button type="submit" class="btn" id="submit">Отправить</button>
                     <!-- Маленькая деталь на будущее (Best Practice)
                      Вместо 
                      <input type="submit" id="submit"> 
@@ -65,42 +68,28 @@
                      Это гибче, так как внутрь <button> можно положить, например, иконку, а в <input> можно засунуть только текст через атрибут value. Но твой вариант рабочий и не считается ошибкой. -->
                 </form>
             </section>
+
             <section class="about-me section-flex">
                 <h2>Обо мне</h2>
-                <p>Текст о мотивации, целях (выплата кредитов, помощь маме, развитие в ИТ) и стек технологий, который планируешь освоить.</p>
+                <p>Целеустремленный Frontend-разработчик. Моя цель — создавать быстрые, адаптивные и доступные интерфейсы. Постоянно развиваюсь, практикуюсь по 20 часов в неделю и нацелен на коммерческий результат в кратчайшие сроки.</p>
             </section>
+
             <section class="main-projects section-flex">
                 <h2>Мои проекты</h2>
-                <div class="project-cards">
-                    <!-- <div class="project-card">
-                        <h3>Проект 1</h3>
-                        <a href="#"><img src="./img/1.jpg" alt="Проект 1"></a>
-                        <p>Описание проекта 1</p>
-                        <a href="#">Смотреть код</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>Проект 2</h3>
-                        <a href="#"><img src="./img/2.jpg" alt="Проект 2"></a>
-                        <p>Описание проекта 2</p>
-                        <a href="#">Смотреть код</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>Проект 3</h3>
-                        <a href="#"><img src="./img/3.jpg" alt="Проект 3"></a>
-                        <p>Описание проекта 3</p>
-                        <a href="#">Смотреть код</a>
-                    </div> -->
+                <div class="project-cards" id="project-cards-container">
+                    <!-- Сюда JS будет вставлять карточки -->
                 </div>
             </section>
         </div>
     </main>
+
     <footer class="footer">
         <div class="container">
             <p>© 2026 Alex</p>
             <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">LinkedIn</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
         </div>
     </footer>

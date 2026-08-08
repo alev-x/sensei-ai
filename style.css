@@ -1,41 +1,59 @@
+/* 1. Переменные для удобства и чистоты */
+:root {
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --primary: #7b2cbf;
+    --accent: #00ff88;
+    --text-light: #ffffff;
+    --text-dark: #121212;
+    --transition: all 0.3s ease;
+}
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+body {
+    font-family: sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-light);
+}
+/* 2. Оптимизация ссылок */
 a {
     text-decoration: none;
     color: inherit;
+    transition: var(--transition);  /* Плавный переход */
 }
 a:hover {
-    color: #7b2cbf;
+    color: var(--primary);
 }
+/* 3. Исправление кнопки и контраста */
 .btn {
     padding: 10px 20px;
-    background-color: #7b2cbf;
-    color: #ffffff;
+    background-color: var(--primary);
+    color: var(--text-light);
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: var(--transition);
 }
 .btn:hover {
-    background-color: #00ff88;
-}
-body {
-    font-family: sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+    background-color: var(--accent);
+    color: var(--text-dark);
 }
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-
     text-align: center;
 }
+/* 4. Объединение одинаковых отступов */
 .header,
 .main,
-.footer {
+.footer,
+.greeting,
+.about-me,
+.main-projects {
     padding-bottom: 20px;
 }
 .logo {
@@ -46,7 +64,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
     gap: 20px;
     list-style: none;
 }
@@ -56,18 +73,6 @@ body {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    height: auto;
-}
-.greeting {
-    padding: 20px 0;
-    margin-bottom: 20px;
-}
-.about-me {
-    padding: 20px 0;
-    margin-bottom: 20px;
-}
-.main-projects {
-    padding: 20px 0;    
 }
 .project-cards {
     display: flex;
@@ -75,32 +80,29 @@ body {
     justify-content: center;
     gap: 20px;
 }
+/* 5. Безопасная адаптивная карточка */
 .project-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 300px;
-    height: auto;
-    background-color: #333;
+    width: 100%;    /* Занимает всю ширину на мобилках */
+    max-width: 300px;   /* Но не растет больше 300px */
+    background-color: var(--bg-card);
     border-radius: 10px;
+    overflow: hidden;   /* Чтобы углы картинки не вылезали за радиус */
 }
 .project-card img {
     width: 100%;
-    height: auto;
+    height: 200px;  /* Фиксируем высоту картинок, чтобы сетка не прыгала */
+    object-fit: cover;  /* Картинка красиво адаптируется без искажения пропорций */
 }
 
-/*Скрытие блока*/
 .content-hidden {
     display: none;
 }
-
+/* 6. Адаптив стал чище, так как карточки уже настроены выше */
 @media (max-width: 768px) {
     .navigation-links {
         flex-direction: column;
         gap: 10px;
-    }
-    .project-card {
-        width: 100%;
-        max-width: 300px;
     }
 }
