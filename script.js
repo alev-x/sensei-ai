@@ -26,7 +26,7 @@ const myProjects = [
 ];
 
 // 1. Находим пустой контейнер на странице
-const cardsContainer = document.querySelector('.project-cards');
+const cardsContainer = document.querySelector('#project-cards-container');
 // 2. Запускаем цикл по нашему массиву проектов
 for (const project of myProjects) {
   // 3. Создаем HTML-структуру для одной карточки, подставляя данные из объекта
@@ -100,38 +100,22 @@ contactForm.addEventListener('submit', async function(event) {
 
 // ==================== ЛОГИКА ТРЕКЕРА КРЕДИТОВ ====================
 
-// 1. Создаем пустой массив, где будут храниться наши кредиты
-let creditsArray = [];
+// 1. Модификация: При загрузке страницы Пытаемся взять данные из localStorage. 
+// Если там пусто, создаем пустой массив [].
+// JSON.parse превращает сохраненную строку обратно в JS-массив.
+let creditsArray = JSON.parse(localStorage.getItem('my_credits')) || [];
 
-// 2. Находим форму в HTML
+// Находим форму в HTML
 const creditForm = document.querySelector('#credit-form');
 const creditsListContainer = document.querySelector('#credits-list');
 
-// 3. Слушаем отправку формы
-if (creditForm) {
-  creditForm.addEventListener('submit', function(event) {
-    // Отменяем перезагрузку страницы
-    event.preventDefault();
-    // Собираем данные из инпутов с помощью FormData
-    const formData = new FormData(creditForm);
-    // Создаем объект нового кредита
-    const newCredit = {
-      id: Date.now(), // Уникальный ID для каждого кредита (метка времени)
-      title: formData.get('title'),
-      total: Number(formData.get('total')), // Переводим строку в число
-      payment: Number(formData.get('payment'))  // Переводим строку в число
-    };
-    // Добавляем новый кредит в наш массив
-    creditsArray.push(newCredit);
-    // Выводим в консоль, чтобы проверить, что всё сработало
-    console.log("Текущий список кредитов:", creditsArray);
-    // ВЫЗЫВАЕМ ФУНКЦИЮ РЕНДЕРА, ЧТОБЫ КАРТОЧКА ПОЯВИЛАСЬ НА ЭКРАНЕ
-    renderCredits();
-    // Очищаем поля формы для следующего ввода
-    creditForm.reset();
-  });
-}
-// 4. Функция для вывода кредитов на экран
+// 2. Вспомогательная функция для сохранения актуального состояния в память
+function saveToLocalStorage() {
+  // JSON.stringify превращает массив объектов в строку, так как localStorage умеет хранить только строки
+  localStorage.setItem('my_credits', JSON.stringify(creditsArray));
+};
+
+// 3. Функция для вывода кредитов на экран (осталась прежней)
 function renderCredits() {
   // Если контейнера нет на странице, выходим из функции
   if (!creditsListContainer) return;
@@ -149,8 +133,8 @@ function renderCredits() {
     return `
       <div class="project-card" style="padding: 20px; text-align: left;">
         <h3>${credit.title}</h3>
-        <p style="margin: 10px 0;">Остаток долга: <strong>${credit.total} ₽</strong></p>
-        <p style="margin: 10px 0;">Ежемесячный платеж: ${credit.payment} ₽</p>
+        <p style="margin: 10px 0;">Остаток долга: <strong>${credit.total} грн</strong></p>
+        <p style="margin: 10px 0;">Ежемесячный платеж: ${credit.payment} грн</p>
         <p style="margin: 10px 0; color: #00ff88;">Осталось месяцев: ${monthsLeft}</p>
         <button class="btn" style="background-color: #e63946; margin-top: 10px;" onclick="deleteCredit(${credit.id})">Удалить</button>
       </div>
@@ -159,10 +143,45 @@ function renderCredits() {
   // Вставляем сгенерированный HTML в контейнер
   creditsListContainer.insertAdjacentHTML('beforeend', creditsHTML);
 };
+
+// 4. Слушаем отправку формы/Обработчик формы
+if (creditForm) {
+  creditForm.addEventListener('submit', function(event) {
+    // Отменяем перезагрузку страницы
+    event.preventDefault();
+    
+    // Собираем данные из инпутов с помощью FormData
+    const formData = new FormData(creditForm);
+    
+    // Создаем объект нового кредита
+    const newCredit = {
+      id: Date.now(), // Уникальный ID для каждого кредита (метка времени)
+      title: formData.get('title'),
+      total: Number(formData.get('total')), // Переводим строку в число
+      payment: Number(formData.get('payment'))  // Переводим строку в число
+    };
+
+    // Добавляем новый кредит в наш массив
+    creditsArray.push(newCredit);
+
+    // СНАЧАЛА СОХРАНЯЕМ В ПАМЯТЬ, ПОТОМ ОБНОВЛЯЕМ ЭКРАН
+    saveToLocalStorage();
+    // ВЫЗЫВАЕМ ФУНКЦИЮ РЕНДЕРА, ЧТОБЫ КАРТОЧКА ПОЯВИЛАСЬ НА ЭКРАНЕ
+    renderCredits();
+    // Очищаем поля формы для следующего ввода
+    creditForm.reset();
+  });
+}
+
 // 5. Функция для удаления кредита (пока просто заготовка, чтобы кнопка не выдавала ошибку)
 window.deleteCredit = function(id) {
   // Фильтруем массив: оставляем только те кредиты, ID которых не равен удаляемому
   creditsArray = creditsArray.filter(credit => credit.id !== id);
-  // Перерисовываем список на экране
+  // ОБНОВЛЯЕМ ПАМЯТЬ И ЭКРАН
+  saveToLocalStorage();
   renderCredits();
 };
+
+// ПОСЛЕДНИЙ ШТРИХ: Запускаем рендер сразу при загрузке скрипта, 
+// чтобы старые сохраненные кредиты сразу появились на экране!
+renderCredits();

@@ -595,7 +595,98 @@ window.deleteCredit = function(id) {
 
 
 ***************************************************************************************************************************************
+Красавец! Ты только что совершил важнейший шаг для любого разработчика — самостоятельно нашел и пофиксил баг (отдебажил код).
+Ты абсолютно правильно заметил, что оба скрипта пытались использовать один и тот же класс .project-cards, из-за чего затирали данные друг друга. Твое решение с поиском по уникальному #project-cards-container — это абсолютно верный, профессиональный подход. Именно за такие навыки решения проблем на ходу компаниям и нужны джуны.
+Теперь наш трекер работает в оперативной памяти: карточки создаются, считаются и удаляются. Но если мы обновим страницу (или закроем браузер), всё сотрется. Давай исправим это раз и навсегда с помощью localStorage.
+------------------------------
+## Шаг 1. Переписываем логику с сохранением данных
+Нам нужно сделать две вещи:
 
+   1. Сохранять массив в память браузера каждый раз, когда мы добавляем или удаляем кредит.
+   2. Считывать данные из памяти каждый раз, когда страница только загружается.
+
+Открой свой script.js, найди кусок кода, который отвечает за трекер кредитов, и замени его на этот финальный вариант. Я переписал его так, чтобы всё работало автоматически:
+
+// ==================== ЛОГИКА ТРЕКЕРА КРЕДИТОВ ====================
+// 1. Модификация: При загрузке страницы Пытаемся взять данные из localStorage. // Если там пусто, создаем пустой массив [].// JSON.parse превращает сохраненную строку обратно в JS-массив.let creditsArray = JSON.parse(localStorage.getItem('my_credits')) || [];
+const creditForm = document.querySelector('#credit-form');const creditsListContainer = document.querySelector('#credits-list');
+// 2. Вспомогательная функция для сохранения актуального состояния в памятьfunction saveToLocalStorage() {
+  // JSON.stringify превращает массив объектов в строку, так как localStorage умеет хранить только строки
+  localStorage.setItem('my_credits', JSON.stringify(creditsArray));
+}
+// 3. Функция для вывода кредитов на экран (осталась прежней)function renderCredits() {
+  if (!creditsListContainer) return;
+  creditsListContainer.innerHTML = '';
+
+  if (creditsArray.length === 0) {
+    creditsListContainer.innerHTML = '<p>У вас пока нет добавленных кредитов.</p>';
+    return;
+  }
+
+  const creditsHTML = creditsArray.map(credit => {
+    const monthsLeft = Math.ceil(credit.total / credit.payment);
+    return `
+      <div class="project-card" style="padding: 20px; text-align: left;">
+        <h3>${credit.title}</h3>
+        <p style="margin: 10px 0;">Остаток долга: <strong>${credit.total} ₽</strong></p>
+        <p style="margin: 10px 0;">Ежемесячный платеж: ${credit.payment} ₽</p>
+        <p style="margin: 10px 0; color: #00ff88;">Осталось месяцев: ${monthsLeft}</p>
+        <button class="btn" style="background-color: #e63946; margin-top: 10px;" onclick="deleteCredit(${credit.id})">Удалить</button>
+      </div>
+    `;
+  }).join('');
+
+  creditsListContainer.insertAdjacentHTML('beforeend', creditsHTML);
+}
+// 4. Обработчик формыif (creditForm) {
+  creditForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(creditForm);
+    
+    const newCredit = {
+      id: Date.now(),
+      title: formData.get('title'),
+      total: Number(formData.get('total')),
+      payment: Number(formData.get('payment'))
+    };
+
+    creditsArray.push(newCredit);
+    
+    // СНАЧАЛА СОХРАНЯЕМ В ПАМЯТЬ, ПОТОМ ОБНОВЛЯЕМ ЭКРАН
+    saveToLocalStorage();
+    renderCredits();
+
+    creditForm.reset();
+  });
+}
+// 5. Функция удаления
+window.deleteCredit = function(id) {
+  creditsArray = creditsArray.filter(credit => credit.id !== id);
+  
+  // ТОЖЕ ОБНОВЛЯЕМ ПАМЯТЬ И ЭКРАН
+  saveToLocalStorage();
+  renderCredits();
+};
+// ПОСЛЕДНИЙ ШТРИХ: Запускаем рендер сразу при загрузке скрипта, // чтобы старые сохраненные кредиты сразу появились на экране!
+renderCredits();
+
+------------------------------
+## Что делаем сейчас:
+
+   1. Перенеси этот обновленный код в свой script.js.
+   2. Проверь в браузере: добавь пару кредитов, а затем перезагрузи страницу (Ctrl + R / F5). Карточки должны остаться на месте!
+   3. Удали одну карточку и снова перезагрузи страницу — она должна исчезнуть навсегда.
+
+Завершай этот этап, фиксируй изменения в Git через консоль и пушь на GitHub. Наш первый полноценный интерактивный мини-сервис почти готов.
+Напиши мне:
+
+* Работает ли теперь сохранение после перезагрузки?
+* Успешно ли ушел новый коммит на GitHub?
+* Готов ли ты добавить финальный штрих — Общую панель (Dashboard), которая будет суммировать все твои долги и показывать общую сумму, которую нужно выплачивать ежемесячно?
+
+
+****************************************************************************************************************************************
 
 
 
